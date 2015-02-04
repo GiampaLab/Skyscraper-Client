@@ -1,0 +1,9 @@
+#shape {
+    width: 100px;
+    height: 100px;
+    background-color: #FF0000;
+    position: relative;
+    cursor: pointer;
+    -webkit-transition:all ease-in-out 0.3s;
+  	transition:all ease-in-out 0.3s;
+}
