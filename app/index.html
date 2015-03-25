@@ -2,10 +2,23 @@
 <html ng-app="skyscraper">
     <head>
         <link rel="stylesheet" type="text/css" href="content/main.css">
+        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     </head>
-    <body ng-controller="hubController">
-        <button ng-click="addBox()">Add Box!</button>
-        <button ng-click="addCircle()">Add Circle!</button>
+    <body init>
+        <!-- <button ng-click="addBox()">Add Box!</button>
+        <button ng-click="addCircle()">Add Circle!</button> -->
+        <div class="container">
+            <div class="row">
+                <div class="bs-glyphicons">
+                    <ul class="bs-glyphicons-list">
+                        <li ng-repeat="symbol in symbols">
+                          <span class="glyphicon" aria-hidden="true" ng-class="symbol"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
 
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/jquery-ui/jquery-ui.js"></script>
@@ -17,8 +30,8 @@
         <script src="bower_components/resurrect-js/resurrect.js"></script>
         <script src="bower_components/pixi/bin/pixi.js"></script>
         <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/hubController.js"></script>
-        <script src="scripts/directives/draggable.js"></script>
+        <script src="scripts/directives/hub.js"></script>
         <script src="scripts/factories/shapeModelFactory.js"></script>
+        <script src="config.js"></script>
     </body>
 </html>

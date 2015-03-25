@@ -16,6 +16,7 @@
     "angular-animate": "*",
     "matter-js": "*",
     "resurrect-js":  "*",
-    "pixi": "*"
+    "pixi": "*",
+    "bootstrap":"*"
   }
 }

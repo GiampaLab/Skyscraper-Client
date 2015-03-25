@@ -2,17 +2,8 @@
 
 var app = angular.module('skyscraper');
 
-app.controller('hubController', ['$scope', 'Hub', 'shapeModelFactory', 
-	function($scope, Hub, shapeModelFactory){
-
-		var necromancer = new Resurrect();
-		var Engine = Matter.Engine,
-		    World = Matter.World,
-		    Bodies = Matter.Bodies,
-		    Body = Matter.Body,
-		    MouseConstraint = Matter.MouseConstraint,
-		    Common = Matter.Common,
-		    RenderPixi = Matter.RenderPixi;
+app.controller('hubController', ['$scope', 'Hub', 'shapeModelFactory', 'constants',
+	function($scope, Hub, shapeModelFactory, constants){
 
 		$scope.shapeModel = shapeModelFactory;
 		$scope.hub = new Hub('skyscraperHub', {
@@ -32,11 +23,9 @@ app.controller('hubController', ['$scope', 'Hub', 'shapeModelFactory',
 	            	addCircle();
 	            }
 			},
-
 			//server side methods
         	methods: ['updateModel', 'addBox', 'addCircle'],
-
-        	rootPath: 'http://192.168.0.3:8099/signalr'
+        	rootPath: constants.signalREndpoint
 		});
 
 		$scope.update = function(shapeModel){
@@ -45,6 +34,14 @@ app.controller('hubController', ['$scope', 'Hub', 'shapeModelFactory',
 			}
 		}
 		
+		var Engine = Matter.Engine,
+		    World = Matter.World,
+		    Bodies = Matter.Bodies,
+		    Body = Matter.Body,
+		    MouseConstraint = Matter.MouseConstraint,
+		    Common = Matter.Common,
+		    RenderPixi = Matter.RenderPixi;
+
 		// create a Matter.js engine
 		var engine = Engine.create(document.body, {
 		  render: {
@@ -65,14 +62,19 @@ app.controller('hubController', ['$scope', 'Hub', 'shapeModelFactory',
 
 		// create two boxes and a ground
 		
-		var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true, friction:0.8});
+		var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true});
 
 		// add all of the bodies to the world
 		World.add(engine.world, ground);
 
-		var boxA = addBox();
-		var boxB = addBox();
+		
+		engine.enableSleeping = false;
+        engine.world.gravity.y = 1;
+        engine.world.gravity.x = 0;
+        engine.timing.timeScale = 1;
 
+        var boxA = addBox();
+		var boxB = addBox();
 		// run the engine
 		Engine.run(engine);
 
@@ -89,11 +91,11 @@ app.controller('hubController', ['$scope', 'Hub', 'shapeModelFactory',
 		}
 
 		function addBox(){
-			var box = Bodies.rectangle(450, 50, 80, 80, {density:10, friction: 0.5});
+			var box = Bodies.rectangle(450, 50, 80, 80);
 			World.add(engine.world, box);
 		}
 		function addCircle(){
-			var circle = Bodies.circle(450, 50, Common.random(10, 20), { friction: 0.00001, restitution: 0.5, density: 0.001 });
+			var circle = Bodies.circle(450, 50, Common.random(10, 20), { friction: 1, restitution: 0.5, density: 10 });
 			World.add(engine.world, circle);
 		}
 	}
