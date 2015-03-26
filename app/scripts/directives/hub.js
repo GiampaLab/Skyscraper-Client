@@ -12,197 +12,208 @@ app.directive('init',['Hub', 'constants',
 
 					listeners:{
 			            'start': function(symbols){
-			            	scope.symbols = initSymbols(symbols);
+			            	scope.currentCard = initSymbols(symbols);
 			            	scope.$apply();
 			            },
-			            'updateCircle': function(){
-			            	addCircle();
+			            'setExtractedCard': function(symbols){
+			            	scope.extractedCard = initSymbols(symbols);
+			            	scope.$apply();
 			            }
 					},
 					//server side methods
-		        	methods: ['initGame'],
+		        	methods: ['initGame', 'extractCard', 'cardMatched'],
 		        	rootPath: constants.signalREndpoint
 				});
 				scope.hub.connection.start()
                     .done(function () {
                     	scope.hub.initGame(8);
+                    	scope.hub.extractCard();
                     });
+
+                scope.select = function(symbol){
+                	if(_.contains(_.pluck(scope.currentCard,'value'), symbol.value)){
+                		scope.hub.cardMatched(_.pluck(scope.currentCard,'id'));
+                		scope.currentCard = scope.extractedCard;
+                		scope.hub.extractCard();
+                	}
+                }
+
 				var initSymbols = function(symbols){
 					var symbolsArray = [];
 					angular.forEach(symbols, function(symbol){
 						if(symbol === 0){
-							symbolsArray.push('glyphicon-glass');
+							symbolsArray.push({value:'glyphicon-glass', id:symbol});
 						}
 						else if(symbol === 1){
-							symbolsArray.push('glyphicon-asterisk');
+							symbolsArray.push({value:'glyphicon-asterisk', id:symbol});
 						}
 						else if(symbol === 2){
-							symbolsArray.push('glyphicon-plus');
+							symbolsArray.push({value:'glyphicon-plus', id:symbol});
 						}
 						else if(symbol === 3){
-							symbolsArray.push('glyphicon-euro');
+							symbolsArray.push({value:'glyphicon-euro', id:symbol});
 						}
 						else if(symbol === 4){
-							symbolsArray.push('glyphicon-minus');
+							symbolsArray.push({value:'glyphicon-minus', id:symbol});
 						}
 						else if(symbol === 5){
-							symbolsArray.push('glyphicon-cloud');
+							symbolsArray.push({value:'glyphicon-cloud', id:symbol});
 						}
 						else if(symbol === 6){
-							symbolsArray.push('glyphicon-envelope');
+							symbolsArray.push({value:'glyphicon-envelope', id:symbol});
 						}
 						else if(symbol === 7){
-							symbolsArray.push('glyphicon-pencil');
+							symbolsArray.push({value:'glyphicon-pencil', id:symbol});
 						}
 						else if(symbol === 8){
-							symbolsArray.push('glyphicon-music');
+							symbolsArray.push({value:'glyphicon-music', id:symbol});
 						}
 						else if(symbol === 9){
-							symbolsArray.push('glyphicon-search');
+							symbolsArray.push({value:'glyphicon-search', id:symbol});
 						}
 						else if(symbol === 10){
-							symbolsArray.push('glyphicon-heart');
+							symbolsArray.push({value:'glyphicon-heart', id:symbol});
 						}
 						else if(symbol === 11){
-							symbolsArray.push('glyphicon-star');
+							symbolsArray.push({value:'glyphicon-star', id:symbol});
 						}
 						else if(symbol === 12){
-							symbolsArray.push('glyphicon-star-empty');
+							symbolsArray.push({value:'glyphicon-star-empty', id:symbol});
 						}
 						else if(symbol === 13){
-							symbolsArray.push('glyphicon-user');
+							symbolsArray.push({value:'glyphicon-user', id:symbol});
 						}
 						else if(symbol === 14){
-							symbolsArray.push('glyphicon-film');
+							symbolsArray.push({value:'glyphicon-film', id:symbol});
 						}
 						else if(symbol === 15){
-							symbolsArray.push('glyphicon-th-large');
+							symbolsArray.push({value:'glyphicon-th-large', id:symbol});
 						}
 						else if(symbol === 16){
-							symbolsArray.push('glyphicon-th');
+							symbolsArray.push({value:'glyphicon-th', id:symbol});
 						}
 						else if(symbol === 17){
-							symbolsArray.push('glyphicon-th-list');
+							symbolsArray.push({value:'glyphicon-th-list', id:symbol});
 						}
 						else if(symbol === 18){
-							symbolsArray.push('glyphicon-ok');
+							symbolsArray.push({value:'glyphicon-ok', id:symbol});
 						}
 						else if(symbol === 19){
-							symbolsArray.push('glyphicon-remove');
+							symbolsArray.push({value:'glyphicon-remove', id:symbol});
 						}
 						else if(symbol === 20){
-							symbolsArray.push('glyphicon-zoom-in');
+							symbolsArray.push({value:'glyphicon-zoom-in', id:symbol});
 						}
 						else if(symbol === 21){
-							symbolsArray.push('glyphicon-zoom-out');
+							symbolsArray.push({value:'glyphicon-zoom-out', id:symbol});
 						}
 						else if(symbol === 22){
-							symbolsArray.push('glyphicon-off');
+							symbolsArray.push({value:'glyphicon-off', id:symbol});
 						}
 						else if(symbol === 23){
-							symbolsArray.push('glyphicon-signal');
+							symbolsArray.push({value:'glyphicon-signal', id:symbol});
 						}
 						else if(symbol === 24){
-							symbolsArray.push('glyphicon-cog');
+							symbolsArray.push({value:'glyphicon-cog', id:symbol});
 						}
 						else if(symbol === 25){
-							symbolsArray.push('glyphicon-trash');
+							symbolsArray.push({value:'glyphicon-trash', id:symbol});
 						}
 						else if(symbol === 26){
-							symbolsArray.push('glyphicon-home');
+							symbolsArray.push({value:'glyphicon-home', id:symbol});
 						}
 						else if(symbol === 27){
-							symbolsArray.push('glyphicon-file');
+							symbolsArray.push({value:'glyphicon-file', id:symbol});
 						}
 						else if(symbol === 28){
-							symbolsArray.push('glyphicon-time');
+							symbolsArray.push({value:'glyphicon-time', id:symbol});
 						}
 						else if(symbol === 29){
-							symbolsArray.push('glyphicon-road');
+							symbolsArray.push({value:'glyphicon-road', id:symbol});
 						}
 						else if(symbol === 30){
-							symbolsArray.push('glyphicon-download-alt');
+							symbolsArray.push({value:'glyphicon-download-alt', id:symbol});
 						}
 						else if(symbol === 31){
-							symbolsArray.push('glyphicon-download');
+							symbolsArray.push({value:'glyphicon-download', id:symbol});
 						}
 						else if(symbol === 32){
-							symbolsArray.push('glyphicon-upload');
+							symbolsArray.push({value:'glyphicon-upload', id:symbol});
 						}
 						else if(symbol === 33){
-							symbolsArray.push('glyphicon-inbox');
+							symbolsArray.push({value:'glyphicon-inbox', id:symbol});
 						}
 						else if(symbol === 34){
-							symbolsArray.push( 'glyphicon-play-circle');
+							symbolsArray.push({value: 'glyphicon-play-circle', id:symbol});
 						}
 						else if(symbol === 35){
-							symbolsArray.push( 'glyphicon-repeat');
+							symbolsArray.push( {value:'glyphicon-repeat', id:symbol});
 						}
 						else if(symbol === 36){
-							symbolsArray.push( 'glyphicon-refresh');
+							symbolsArray.push( {value:'glyphicon-refresh', id:symbol});
 						}
 						else if(symbol === 37){
-							symbolsArray.push( 'glyphicon-list-alt');
+							symbolsArray.push( {value:'glyphicon-list-alt', id:symbol});
 						}
 						else if(symbol === 38){
-							symbolsArray.push( 'glyphicon-lock');
+							symbolsArray.push( {value:'glyphicon-lock', id:symbol});
 						}
 						else if(symbol === 39){
-							symbolsArray.push( 'glyphicon-flag');
+							symbolsArray.push( {value:'glyphicon-flag', id:symbol});
 						}
 						else if(symbol === 40){
-							symbolsArray.push( 'glyphicon-headphones');
+							symbolsArray.push( {value:'glyphicon-headphones', id:symbol});
 						}
 						else if(symbol === 41){
-							symbolsArray.push( 'glyphicon-volume-off');
+							symbolsArray.push( {value:'glyphicon-volume-off', id:symbol});
 						}
 						else if(symbol === 42){
-							symbolsArray.push( 'glyphicon-volume-down');
+							symbolsArray.push( {value:'glyphicon-volume-down', id:symbol});
 						}
 						else if(symbol === 43){
-							symbolsArray.push( 'glyphicon-volume-up');
+							symbolsArray.push( {value:'glyphicon-volume-up', id:symbol});
 						}
 						else if(symbol === 44){
-							symbolsArray.push( 'glyphicon-qrcode');
+							symbolsArray.push( {value:'glyphicon-qrcode', id:symbol});
 						}
 						else if(symbol === 45){
-							symbolsArray.push( 'glyphicon-barcode');
+							symbolsArray.push( {value:'glyphicon-barcode', id:symbol});
 						}
 						else if(symbol === 46){
-							symbolsArray.push( 'glyphicon-tag');
+							symbolsArray.push({value: 'glyphicon-tag', id:symbol});
 						}
 						else if(symbol === 47){
-							symbolsArray.push( 'glyphicon-tags');
+							symbolsArray.push( {value:'glyphicon-tags', id:symbol});
 						}
 						else if(symbol === 48){
-							symbolsArray.push( 'glyphicon-book');
+							symbolsArray.push({value: 'glyphicon-book', id:symbol});
 						}
 						else if(symbol === 49){
-							symbolsArray.push( 'glyphicon-bookmark');
+							symbolsArray.push( {value:'glyphicon-bookmark', id:symbol});
 						}
 						else if(symbol === 50){
-							symbolsArray.push('glyphicon-fire');
+							symbolsArray.push({value:'glyphicon-fire', id:symbol});
 						}
 						else if(symbol === 51){
-							symbolsArray.push( 'glyphicon-print');
+							symbolsArray.push( {value:'glyphicon-print', id:symbol});
 						}
 						else if(symbol === 52){
-							symbolsArray.push( 'glyphicon-camera');
+							symbolsArray.push( {value:'glyphicon-camera', id:symbol});
 						}
 						else if(symbol === 53){
-							symbolsArray.push( 'glyphicon-font');
+							symbolsArray.push( {value:'glyphicon-font', id:symbol});
 						}
 						else if(symbol === 54){
-							symbolsArray.push( 'glyphicon-bold');
+							symbolsArray.push( {value:'glyphicon-bold', id:symbol});
 						}
 						else if(symbol === 55){
-							symbolsArray.push( 'glyphicon-italic');
+							symbolsArray.push( {value:'glyphicon-italic', id:symbol});
 						}
 						else if(symbol === 56){
-							symbolsArray.push('glyphicon-text-height');
+							symbolsArray.push({value:'glyphicon-text-height', id:symbol});
 						}
 						else if(symbol === 57){
-							symbolsArray.push('glyphicon-text-width');
+							symbolsArray.push({value:'glyphicon-text-width', id:symbol});
 						}
 						else{
 							symbolsArray.push(''+symbol);

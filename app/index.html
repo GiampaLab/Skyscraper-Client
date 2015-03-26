@@ -11,10 +11,24 @@
             <div class="row">
                 <div class="bs-glyphicons">
                     <ul class="bs-glyphicons-list">
-                        <li ng-repeat="symbol in symbols">
-                          <span class="glyphicon" aria-hidden="true" ng-class="symbol"></span>
+                        <li ng-repeat="symbol in extractedCard">
+                          <span class="glyphicon" aria-hidden="true" ng-class="symbol.value" ng-click="select(symbol)"></span>
                         </li>
                     </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="bs-glyphicons-current">
+                        <ul class="bs-glyphicons-list">
+                            <li ng-repeat="symbol in currentCard">
+                              <span class="glyphicon" aria-hidden="true" ng-class="symbol.value"></span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,6 +43,7 @@
         <script src="bower_components/matter-js/build/matter-0.8.0.js"></script>
         <script src="bower_components/resurrect-js/resurrect.js"></script>
         <script src="bower_components/pixi/bin/pixi.js"></script>
+        <script src="bower_components/underscore/underscore-min.js"></script>
         <script src="scripts/app.js"></script>
         <script src="scripts/directives/hub.js"></script>
         <script src="scripts/factories/shapeModelFactory.js"></script>

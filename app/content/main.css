@@ -7,7 +7,7 @@
     -webkit-transition:all ease-in-out 0.3s;
   	transition:all ease-in-out 0.3s;
 }
-.bs-glyphicons {
+.bs-glyphicons,  .bs-glyphicons-current{
   margin: 0 -10px 20px;
   overflow: hidden;
 }
@@ -15,7 +15,7 @@
   padding-left: 0;
   list-style: none;
 }
-.bs-glyphicons li {
+.bs-glyphicons li, .bs-glyphicons-current li {
   float: left;
   width: 12.5%;
   height: 100px;
@@ -29,9 +29,28 @@
 .bs-glyphicons li:hover {
   color: #fff;
   background-color: #563d7c;
+  cursor: pointer;
 }
-.bs-glyphicons .glyphicon {
+.bs-glyphicons .glyphicon, .bs-glyphicons-current .glyphicon{
   margin-top: 5px;
   margin-bottom: 10px;
-  font-size: 24px;
+  font-size: 62px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 120px;
+}
+li {
+    opacity: 1;
+}
+li.ng-enter {
+    -webkit-transition: 1s;
+    transition: 1s;
+    opacity: 0;
+}
+li.ng-enter-active {
+    opacity: 1;
 }

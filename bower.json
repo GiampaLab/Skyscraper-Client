@@ -17,6 +17,7 @@
     "matter-js": "*",
     "resurrect-js":  "*",
     "pixi": "*",
-    "bootstrap":"*"
+    "bootstrap":"*",
+    "underscore": "*"
   }
 }
