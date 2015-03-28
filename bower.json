@@ -15,9 +15,9 @@
     "jquery-ui": "*",
     "angular-animate": "*",
     "matter-js": "*",
-    "resurrect-js":  "*",
+    "resurrect-js": "*",
     "pixi": "*",
-    "bootstrap":"*",
+    "bootstrap": "*",
     "underscore": "*"
   }
 }

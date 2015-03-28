@@ -8,6 +8,17 @@
         <!-- <button ng-click="addBox()">Add Box!</button>
         <button ng-click="addCircle()">Add Circle!</button> -->
         <div class="container">
+
+            <div class="jumbotron">
+                <h1>Skyscraper</h1>
+                <div class="row">
+                    <button class="btn btn-default" type="submit" ng-disabled="gameStarted" ng-click="startGame()">Start game</button>
+                </div>
+                <gplus>
+                    
+                </gplus>
+            </div>
+            
             <div class="row">
                 <div class="bs-glyphicons">
                     <ul class="bs-glyphicons-list">
@@ -32,8 +43,6 @@
                 </div>
             </div>
         </div>
-        
-
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/jquery-ui/jquery-ui.js"></script>
         <script src="bower_components/signalr/jquery.signalR.js"></script>
@@ -46,6 +55,7 @@
         <script src="bower_components/underscore/underscore-min.js"></script>
         <script src="scripts/app.js"></script>
         <script src="scripts/directives/hub.js"></script>
+        <script src="scripts/directives/googleAuth.js"></script>
         <script src="scripts/factories/shapeModelFactory.js"></script>
         <script src="config.js"></script>
     </body>

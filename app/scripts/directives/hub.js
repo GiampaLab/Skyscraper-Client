@@ -8,6 +8,8 @@ app.directive('init',['Hub', 'constants',
 			restrict: 'A',
 			link: function(scope, element, attr){
 
+				scope.gameStarted = false;
+
 				scope.hub = new Hub('skyscraperHub', {
 
 					listeners:{
@@ -18,24 +20,38 @@ app.directive('init',['Hub', 'constants',
 			            'setExtractedCard': function(symbols){
 			            	scope.extractedCard = initSymbols(symbols);
 			            	scope.$apply();
+			            },
+			            'gameOver': function(gameStats){
+			            	scope.gameStarted = false;
+		            		scope.$apply();
 			            }
 					},
 					//server side methods
-		        	methods: ['initGame', 'extractCard', 'cardMatched'],
+		        	methods: ['initGame', 'extractCard', 'cardMatched',  'startGame'],
 		        	rootPath: constants.signalREndpoint
 				});
-				scope.hub.connection.start()
+				/*scope.hub.connection.start()
                     .done(function () {
-                    	scope.hub.initGame(8);
-                    	scope.hub.extractCard();
-                    });
+                    	initGame();
+                    });*/
+
+                scope.startGame = function(){
+                	scope.gameStarted = true;
+                	scope.hub.startGame();
+                	initGame();
+                }
 
                 scope.select = function(symbol){
-                	if(_.contains(_.pluck(scope.currentCard,'value'), symbol.value)){
+                	if(_.contains(_.pluck(scope.currentCard,'value'), symbol.value) && !scope.gameOver){
                 		scope.hub.cardMatched(_.pluck(scope.currentCard,'id'));
                 		scope.currentCard = scope.extractedCard;
                 		scope.hub.extractCard();
                 	}
+                }
+
+                var initGame = function(){
+                	scope.hub.initGame(8);
+                	scope.hub.extractCard();
                 }
 
 				var initSymbols = function(symbols){
