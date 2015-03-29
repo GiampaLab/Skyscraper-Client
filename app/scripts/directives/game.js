@@ -2,7 +2,7 @@
 
 var app = angular.module('skyscraper');
 
-app.directive('init',['Hub', 'constants',
+app.directive('game',['Hub', 'constants',
 	function(Hub, constants){
 		var ddo = {
 			restrict: 'A',
@@ -10,30 +10,39 @@ app.directive('init',['Hub', 'constants',
 
 				scope.gameStarted = false;
 
+				scope.players = [];
+
 				scope.hub = new Hub('skyscraperHub', {
 
 					listeners:{
 			            'start': function(symbols){
+			            	scope.gameStarted = true;
 			            	scope.currentCard = initSymbols(symbols);
 			            	scope.$apply();
 			            },
-			            'setExtractedCard': function(symbols){
+			            'setExtractedCard': function(symbols, players){
 			            	scope.extractedCard = initSymbols(symbols);
+			            	angular.forEach(players, function(p){
+			            		var player = _.find(scope.players, function(pl){
+			            			return pl.id === p.id;
+			            		})
+			            		player.points = p.points;
+			            	})
 			            	scope.$apply();
 			            },
 			            'gameOver': function(gameStats){
 			            	scope.gameStarted = false;
 		            		scope.$apply();
+			            },
+			            'setPlayers': function(players){
+			            	scope.players = players;
+			            	scope.$apply();
 			            }
 					},
 					//server side methods
-		        	methods: ['initGame', 'extractCard', 'cardMatched',  'startGame'],
+		        	methods: ['initGame', 'extractCard', 'cardMatched',  'startGame', 'addPlayer'],
 		        	rootPath: constants.signalREndpoint
 				});
-				/*scope.hub.connection.start()
-                    .done(function () {
-                    	initGame();
-                    });*/
 
                 scope.startGame = function(){
                 	scope.gameStarted = true;
@@ -45,7 +54,6 @@ app.directive('init',['Hub', 'constants',
                 	if(_.contains(_.pluck(scope.currentCard,'value'), symbol.value) && !scope.gameOver){
                 		scope.hub.cardMatched(_.pluck(scope.currentCard,'id'));
                 		scope.currentCard = scope.extractedCard;
-                		scope.hub.extractCard();
                 	}
                 }
 
@@ -53,6 +61,22 @@ app.directive('init',['Hub', 'constants',
                 	scope.hub.initGame(8);
                 	scope.hub.extractCard();
                 }
+
+                scope.$on('login', function(event, info){
+                	scope.$apply(function(){
+                		scope.currentPlayer = {displayName: info.displayName, imageUrl: info.image.url};
+                		//scope.players.push(scope.currentPlayer);
+	            		scope.login = true;
+	            		scope.hub.addPlayer({displayName: info.displayName, imageUrl: info.image.url, id: info.id});
+                	});
+                });
+
+                scope.$on('logout', function(){
+            		scope.login = false;
+            		scope.players = _.reject(scope.players, function(p){
+            			return p.displayName = scope.currentPlayer.displayName;
+            		});
+                });
 
 				var initSymbols = function(symbols){
 					var symbolsArray = [];

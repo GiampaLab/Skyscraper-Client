@@ -7,7 +7,7 @@ app.directive('gplus',
     var ddo = {
       restrict: 'E',
       transclude: true,
-      template: '<span></span>',
+      template: '<div><span class="signIn" ng-show="!signedIn"></span><button class="btn btn-default" type="submit" ng-show="signedIn" ng-click="signOut()">Sign out</button><div>',
       replace: true,
       link: function(scope, element, attr, ctrl, linker){
         // This flag we use to show or hide the button in our HTML.
@@ -17,31 +17,43 @@ app.directive('gplus',
         // Note that authResult is a JSON object.
         scope.processAuth = function(authResult) {
             // Do a check if authentication has been successful.
-            if(authResult['access_token']) {
+            if(authResult['status']['signed_in']) {
                 // Successful sign in.
                 scope.signedIn = true;
-     
+                //gapi.client.setApiKey('AIzaSyAsn4fajaYEpKu7q9hRWv7TSrRL39nkb4I');
                 gapi.client.load('plus','v1', function(){
                  var request = gapi.client.plus.people.get({
                    'userId': 'me'
                  });
                  request.execute(function(resp) {
+                   scope.$broadcast('login', resp);
                    console.log('Retrieved profile for:' + resp.displayName);
                  });
                 });
-            } else if(authResult['error']) {
+            } else if(!angular.isUndefined(authResult['error']) && authResult['error'] !== null)  {
                 // Error while signing in.
                 scope.signedIn = false;
-     
+                console.log('Error');
                 // Report error.
             }
         };
 
+        scope.signOut = function(){
+          gapi.auth.signOut();
+          scope.signedIn = false;
+          scope.$broadcast('logout');
+        }
+
         // When callback is received, we need to process authentication.
         scope.signInCallback = function(authResult) {
+          if(scope.$$phase) {
+            scope.processAuth(authResult);
+          }
+          else {
             scope.$apply(function() {
-                scope.processAuth(authResult);
+              scope.processAuth(authResult);
             });
+          }
         };
 
         // Asynchronously load the G+ SDK.
@@ -54,7 +66,8 @@ app.directive('gplus',
             if (el.length) {
               element.append(el);
             }
-            gapi.signin.render(element[0], 
+            var signIn = element[0].getElementsByClassName('signIn');
+            gapi.signin.render(signIn[0], 
             {
               'callback': scope.signInCallback, // Function handling the callback.
               'clientid': '523803381681-2si853ks8rqsm3l29cb5u61hbek30l3e.apps.googleusercontent.com', // CLIENT_ID from developer console which has been explained earlier.
