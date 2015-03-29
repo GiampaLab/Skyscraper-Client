@@ -37,6 +37,11 @@ app.directive('game',['Hub', 'constants',
 			            'setPlayers': function(players){
 			            	scope.players = players;
 			            	scope.$apply();
+			            },
+			            'joinGame': function(currentlyExtractedCard, playerCurrentCard){
+			            	scope.extractedCard = initSymbols(currentlyExtractedCard);
+			            	scope.currentCard = initSymbols(playerCurrentCard);
+			            	scope.$apply();
 			            }
 					},
 					//server side methods
@@ -52,7 +57,7 @@ app.directive('game',['Hub', 'constants',
 
                 scope.select = function(symbol){
                 	if(_.contains(_.pluck(scope.currentCard,'value'), symbol.value) && !scope.gameOver){
-                		scope.hub.cardMatched(_.pluck(scope.currentCard,'id'));
+                		scope.hub.cardMatched(_.pluck(scope.extractedCard,'id'), scope.currentPlayer.id);
                 		scope.currentCard = scope.extractedCard;
                 	}
                 }
@@ -64,7 +69,7 @@ app.directive('game',['Hub', 'constants',
 
                 scope.$on('login', function(event, info){
                 	scope.$apply(function(){
-                		scope.currentPlayer = {displayName: info.displayName, imageUrl: info.image.url};
+                		scope.currentPlayer = {displayName: info.displayName, imageUrl: info.image.url, id: info.id};
                 		//scope.players.push(scope.currentPlayer);
 	            		scope.login = true;
 	            		scope.hub.addPlayer({displayName: info.displayName, imageUrl: info.image.url, id: info.id});
