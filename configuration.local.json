@@ -1,5 +1,5 @@
 {
-"signalREndpoint":"http://localhost:26704/signalr",
+"signalREndpoint":"http://localhost:8099/signalr",
 "clientCacheMinutes":"30",
 "clientConfigCacheMinutes":"10"
 }

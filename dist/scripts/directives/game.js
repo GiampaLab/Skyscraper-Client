@@ -2,31 +2,12 @@
 
 var app = angular.module('skyscraper');
 
-app.directive('game',['Hub', 'constants', '$timeout',
-	function(Hub, constants, $timeout){
+app.directive('game',['Hub', 'constants',
+	function(Hub, constants){
 		var ddo = {
 			restrict: 'A',
 			link: function(scope, element, attr){
 
-                var counterValue = 15;
-                scope.myCards = [];
-                scope.counter = counterValue;
-                
-                scope.onTimeout = function(){
-                    scope.$apply(function(){
-                        scope.counter--;
-                        if(scope.counter === 0){
-                            scope.myCards.push({symbols:scope.extractedCard});
-                            scope.stop();
-                        }
-                        $timeout(scope.onTimeout,1000);
-                    })
-                }
-
-                scope.stop = function(){
-                    scope.hub.extractCard();
-                }
-                
 				scope.gameStarted = false;
 
 				scope.players = [];
@@ -40,22 +21,14 @@ app.directive('game',['Hub', 'constants', '$timeout',
 			            	scope.$apply();
 			            },
 			            'setExtractedCard': function(symbols, players){
-			            	scope.$apply(function(){
-                                scope.extractedCard = initSymbols(symbols);
-                                angular.forEach(players, function(p){
-                                    var player = _.find(scope.players, function(pl){
-                                        return pl.id === p.id;
-                                    })
-                                    player.points = p.points;
-                                })
-                                if(scope.timeout){
-                                    $timeout.cancel(scope.timeout);
-                                }
-                                if(!scope.timeout){
-                                    scope.timeout = $timeout(scope.onTimeout,1000);
-                                }
-                                scope.counter = counterValue;
-                            });
+			            	scope.extractedCard = initSymbols(symbols);
+			            	angular.forEach(players, function(p){
+			            		var player = _.find(scope.players, function(pl){
+			            			return pl.id === p.id;
+			            		})
+			            		player.points = p.points;
+			            	})
+			            	scope.$apply();
 			            },
 			            'gameOver': function(gameStats){
 			            	scope.gameStarted = false;
