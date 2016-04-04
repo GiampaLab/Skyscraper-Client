@@ -42,7 +42,7 @@
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 120px;
+  height: auto;
 }
 li {
     opacity: 1;
@@ -54,4 +54,7 @@ li.ng-enter {
 }
 li.ng-enter-active {
     opacity: 1;
+}
+section .btn{
+    margin: 8px;
 }

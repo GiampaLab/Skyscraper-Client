@@ -1,23 +1,21 @@
 {
-  "name": "angular-seed",
-  "description": "A starter project for AngularJS",
+  "name": "Skyscaraper-Client",
+  "description": "Skyscraper-Client",
   "version": "0.0.0",
-  "homepage": "https://github.com/angular/angular-seed",
+  "homepage": "https://github.com/GiampaLab/Skyscraper-Client",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "angular": "*",
-    "angular-route": "*",
-    "angular-loader": "*",
-    "angular-mocks": "*",
-    "html5-boilerplate": "*",
-    "angular-signalr-hub": "*",
-    "jquery-ui": "*",
-    "angular-animate": "*",
-    "matter-js": "*",
-    "resurrect-js": "*",
-    "pixi": "*",
-    "bootstrap": "*",
-    "underscore": "*"
+    "angular": "^1.5.3",
+    "angular-route": "^1.5.3",
+    "angular-loader": "^1.5.3",
+    "angular-mocks": "^1.5.3",
+    "angular-animate": "^1.5.3",
+    "angular-signalr-hub": "^1.6.1",
+    "bootstrap": "^3.3.6",
+    "underscore": "^1.8.3",
+    "angular-material": "^1.0.7",
+    "angular-aria": "^1.5.3",
+    "angular-messages": "^1.5.3"
   }
 }
