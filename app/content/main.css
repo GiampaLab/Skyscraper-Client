@@ -58,3 +58,10 @@ li.ng-enter-active {
 section .btn{
     margin: 8px;
 }
+.skyscraperIcon{
+    max-height: 100%;
+    max-width: 100%;
+}
+section md-content{
+    overflow: hidden;
+}

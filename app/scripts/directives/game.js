@@ -67,11 +67,12 @@ app.directive('game',['Hub', 'constants', '$timeout',
 			            	scope.players = players;
 			            	scope.$apply();
 			            },
-			            'joinGame': function(currentlyExtractedCard, playerCurrentCard){
+			            'joinGame': function(currentlyExtractedCard, playerCurrentCard, player){
 			            	scope.extractedCard = currentlyExtractedCard;
 			            	scope.currentCard = playerCurrentCard;
 			            	scope.gameStarted = true;
 			            	scope.gameOver = false;
+                            scope.players.push(player);
 			            	scope.$apply();
 			            }
 					},
