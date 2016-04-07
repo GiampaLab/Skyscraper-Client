@@ -98,10 +98,11 @@ app.directive('game',['Hub', 'constants', '$timeout',
                 }
 
                 scope.select = function(symbol){
-                	if (_.contains(_.pluck(scope.currentCard, 'id'), symbol.id) && !scope.gameOver) {
-                        if (!angular.isUndefined(scope.extractedCard) && scope.extractedCard !== null) {
-                            scope.currentCard = scope.extractedCard;
-                        }
+                    if(!scope.extractedCard){
+                        return;
+                    }
+                	if (_.contains(_.pluck(scope.extractedCard, 'id'), symbol.id) && !scope.gameOver) {
+                        scope.currentCard = scope.extractedCard;
                 		scope.hub.cardMatched(_.pluck(scope.extractedCard,'id'), scope.currentPlayer.id);
                 	}
                 }

@@ -17,15 +17,11 @@
 
             <md-sidenav class="md-sidenav-left md-whiteframe-z2 md-closed ng-isolate-scope md-locked-open" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')"
             tabindex="-1">
-            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
-                <button class="btn btn-default glyphicon glyphicon-play" type="submit" ng-disabled="gameStarted || !login" ng-click="startGame()"></button>
-                <button class="btn btn-default glyphicon glyphicon-refresh" type="submit" ng-disabled="!gameStarted || !login" ng-click="resetGame()"></button>
-                <gplus></gplus>
-            </section>
-                <md-toolbar class="md-theme-indigo">
+                <md-toolbar class="md-theme-indigo" layout="row">
                     <h1 class="md-toolbar-tools">Players</h1>
+                    <gplus layout-margin></gplus>
                 </md-toolbar>
-                <md-content layout-padding="" class="layout-padding ng-scope">
+                <md-content layout-padding>
                     <md-list>
                         <!--<md-subheader class="md-no-sticky">Players</md-subheader>-->
                         <md-list-item class="md-2-line" ng-repeat="player in players" ng-hide="!login">
@@ -38,6 +34,25 @@
                     </md-list>
                     </p>
                 </md-content>
+                <div style="position:absolute; bottom:0">
+                    <div layout="row" layout-fill layout-align="start end" class="lock-size">
+                        <md-fab-speed-dial md-open="menuIsOpen" md-direction="up" ng-class="'md-fling'">
+                            <md-fab-trigger>
+                                <md-button aria-label="menu" class="md-fab md-warn">
+                                    <md-icon class="material-icons">reorder</md-icon>
+                                </md-button>
+                            </md-fab-trigger>
+                            <md-fab-actions>
+                                <md-button aria-label="startGame" class="md-fab md-raised md-mini" ng-disabled="gameStarted || !login" ng-click="startGame()">
+                                    <md-icon class="material-icons">play_arrow</md-icon>
+                                </md-button>
+                                <md-button aria-label="refresh" class="md-fab md-raised md-mini" ng-disabled="!gameStarted || !login" ng-click="resetGame()">
+                                    <md-icon class="material-icons">refresh</md-icon>
+                                </md-button>
+                            </md-fab-actions>
+                        </md-fab-speed-dial>
+                    </div>
+                </div>
             </md-sidenav>
 
             <md-content flex="" layout-padding="" class="layout-padding flex">
@@ -48,10 +63,21 @@
                             <div class="col-md-4">
                             </div>
                         </div>
+                        <div ng-hide="myCards.length === 0">
+                            <div class="row" ng-repeat="card in myCards">
+                                <div class="bs-glyphicons-current">
+                                    <ul layout="row" layout-align="center center" class="bs-glyphicons-list">
+                                        <li ng-repeat="symbol in card.symbols">
+                                            <img ng-src="{{symbol.path}}" class="glyphicon skyscraperIcon" />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
-                            <div class="bs-glyphicons">
-                                <ul class="bs-glyphicons-list">
-                                    <li ng-repeat="symbol in extractedCard" ng-click="select(symbol)">
+                            <div class="bs-glyphicons-current">
+                                <ul layout="row" layout-align="center center" class="bs-glyphicons-list">
+                                    <li ng-repeat="symbol in extractedCard">
                                         <img ng-src="{{symbol.path}}" class="glyphicon skyscraperIcon" />
                                     </li>
                                 </ul>
@@ -61,25 +87,15 @@
                     <div class="footer">
                         <div class="container">
                             <div class="row">
-                                <div class="bs-glyphicons-current">
-                                    <ul class="bs-glyphicons-list">
-                                        <li ng-repeat="symbol in currentCard">
+                                <div class="bs-glyphicons">
+                                    <ul layout="row" layout-align="center center" class="bs-glyphicons-list">
+                                        <li ng-repeat="symbol in currentCard" ng-click="select(symbol)">
                                             <img ng-src="{{symbol.path}}" class="glyphicon skyscraperIcon" />
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            <div ng-hide="myCards.length === 0">
-                                <div class="row" ng-repeat="card in myCards">
-                                    <div class="bs-glyphicons-current">
-                                        <ul class="bs-glyphicons-list">
-                                            <li ng-repeat="symbol in card.symbols">
-                                                <img ng-src="{{symbol.path}}" class="glyphicon skyscraperIcon" />
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -96,12 +112,12 @@
     <script src="bower_components/angular-aria/angular-aria.min.js"></script>
     <script src="bower_components/angular-material/angular-material.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/directives/game.js"></script>
     <script src="scripts/directives/googleAuth.js"></script>
     <script src="scripts/factories/shapeModelFactory.js"></script>
     <script src="config.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </body>
 
 </html>
