@@ -1,0 +1,18 @@
+.symbol.ng-move,
+.symbol.ng-enter,
+.symbol.ng-leave {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
+
+.symbol.ng-leave.ng-leave-active,
+.symbol.ng-move,
+.symbol.ng-enter {
+  opacity:0;
+}
+
+.symbol.ng-leave,
+.symbol.ng-move.ng-move-active,
+.symbol.ng-enter.ng-enter-active {
+  opacity:1;
+}
