@@ -12,6 +12,8 @@ app.directive('game', ['Hub', 'constants', '$timeout', '$interval',
                 var hubInited = false;
                 var needLogin = false;
                 var loginInfo = null;
+                scope.attempts = 0;
+                scope.maxAttempts = 3;
                 scope.timeLeft = 100;
                 scope.myCards = [];
                 scope.counter = counterValue;
@@ -51,6 +53,7 @@ app.directive('game', ['Hub', 'constants', '$timeout', '$interval',
                         },
                         'setExtractedCard': function(symbols, players) {
                             scope.$apply(function() {
+                                scope.attempts = 0;
                                 scope.extractedCard = symbols;
                                 setPlayerPoints(players);
                                 resetAndStartTimeout();
@@ -122,12 +125,14 @@ app.directive('game', ['Hub', 'constants', '$timeout', '$interval',
                     if (!scope.extractedCard) {
                         return;
                     }
-                    if (_.contains(_.pluck(scope.extractedCard, 'id'), symbol.id) && !scope.gameOver) {
+                    if (scope.attempts < scope.maxAttempts && _.contains(_.pluck(scope.extractedCard, 'id'), symbol.id) && !scope.gameOver) {
                         scope.currentCard = scope.extractedCard;
                         scope.currentSymbols = _.filter(scope.extractedCard, function(s) {
                             return s.id !== symbol.id;
                         });
                         scope.currentCardTimeout = scope.theTimeout(updateCurrentCard(), 100);
+                    }else if(scope.attempts < scope.maxAttempts){
+                        scope.attempts++;
                     }
                 }
 
