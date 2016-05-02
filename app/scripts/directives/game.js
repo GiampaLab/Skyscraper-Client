@@ -21,6 +21,7 @@ app.directive('game', ['Hub', 'constants', '$timeout', '$interval',
                 scope.players = [];
                 scope.gameOver = false;
                 scope.theTimeout = $timeout;
+                scope.menuIsOpen = true;
 
                 scope.onTimeout = function() {
                     scope.$apply(function() {
@@ -82,6 +83,14 @@ app.directive('game', ['Hub', 'constants', '$timeout', '$interval',
                     methods: ['extractCard', 'cardMatched', 'startGame', 'addPlayer', 'resetGame'],
                     rootPath: constants.signalREndpoint
                 });
+                
+                scope.getMyCardsSymbols = function(){
+                    var result = [];
+                    angular.forEach(scope.myCards, function(card){
+                       result = result.concat(card.symbols); 
+                    });
+                    return result;
+                }
 
                 scope.hub.promise.done(function(result) {
                     hubInited = true;
@@ -101,25 +110,6 @@ app.directive('game', ['Hub', 'constants', '$timeout', '$interval',
                     scope.currentCard.splice(0, scope.currentCard.length);
                     scope.extractedCard.splice(0, scope.extractedCard.length);
                 }
-                
-                var i = 0, j = 0;
-                var updateCurrentCard = function() {
-                    var s = scope.currentCard[i];
-                    var sj = scope.currentSymbols[j];
-                    if (_.contains(_.pluck(scope.currentSymbols, 'id'), s.id)) {
-                        scope.currentCard.splice(i, 1, sj);
-                        j++;
-                    }
-                    i++;
-                    if(i == scope.currentCard.length){
-                        scope.theTimeout.cancel(scope.currentCardTimeout);
-                        i=0;j=0;
-                        scope.hub.cardMatched(_.pluck(scope.extractedCard, 'id'), scope.currentPlayer.id);
-                    }
-                    else{
-                        scope.theTimeout(updateCurrentCard(), 100);
-                    }
-                }
 
                 scope.select = function(symbol) {
                     if (!scope.extractedCard) {
@@ -127,10 +117,7 @@ app.directive('game', ['Hub', 'constants', '$timeout', '$interval',
                     }
                     if (scope.attempts < scope.maxAttempts && _.contains(_.pluck(scope.extractedCard, 'id'), symbol.id) && !scope.gameOver) {
                         scope.currentCard = scope.extractedCard;
-                        scope.currentSymbols = _.filter(scope.extractedCard, function(s) {
-                            return s.id !== symbol.id;
-                        });
-                        scope.currentCardTimeout = scope.theTimeout(updateCurrentCard(), 100);
+                        scope.hub.cardMatched(_.pluck(scope.extractedCard, 'id'), scope.currentPlayer.id);
                     }else if(scope.attempts < scope.maxAttempts){
                         scope.attempts++;
                     }

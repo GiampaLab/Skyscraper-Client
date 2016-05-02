@@ -60,48 +60,36 @@
                 </div>
             </md-sidenav>
 
-            <md-content flex="" layout-padding="" class="layout-padding flex">
+            <md-content flex="" layout-padding="" class="layout-padding flex" >
                 <md-progress-linear md-mode="determinate" value="{{timeLeft}}"></md-progress-linear>
-                <div layout="column" layout-fill="" layout-align="top center" class="layout-fill layout-align-start-center layout-column">
+                <div layout="column" 
+                    layout-fill="" 
+                    layout-align="top center" 
+                    class="layout-fill layout-align-start-center layout-column" 
+                    style="max-height:80vh;overflow-y:auto">
                     <div class="container">
-                        <div class="row">
-                            <div class="col-md-4">
-                            </div>
-                        </div>
-                        <div ng-hide="myCards.length === 0">
-                            <div class="row" ng-repeat="card in myCards">
-                                <div class="bs-glyphicons-current">
-                                    <ul layout="row" layout-align="center center" class="bs-glyphicons-list">
-                                        <li ng-repeat="symbol in card.symbols" class="symbol">
-                                            <img ng-src="{{symbol.path}}" class="glyphicon skyscraperIcon" />
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="bs-glyphicons-current" ng-class=>
-                                <ul layout="row" layout-align="center center" class="bs-glyphicons-list">
-                                    <li ng-repeat="symbol in extractedCard" class="symbol">
-                                        <img ng-src="{{symbol.path}}" class="glyphicon skyscraperIcon" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        <md-grid-list md-cols="8" md-row-height="2:2">
+                            <md-grid-tile class="symbol" ng-repeat="symbol in getMyCardsSymbols()">
+                                <img ng-src="{{symbol.path}}" class="glyphicon skyscraperIcon" />
+                            </md-grid-tile>
+                            <md-grid-tile ng-repeat="symbol in extractedCard" class="symbol">
+                                <img ng-src="{{symbol.path}}" class="glyphicon skyscraperIcon" />
+                            </md-grid-tile>
+                        </md-grid-list>
                     </div>
-                    <div class="footer">
-                        <div class="container">
-                            <div class="row">
-                                <div class="bs-glyphicons">
-                                    <ul layout="row" layout-align="center center" class="bs-glyphicons-list">
-                                        <li ng-repeat="symbol in currentCard" ng-click="select(symbol)" class="symbol">
-                                            <img ng-src="{{symbol.path}}" class="glyphicon skyscraperIcon" />
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                        </div>
+                    <div class="container footer" style="height:20vh;">
+                        <md-grid-list md-cols="8" md-row-height="2:2" class="bs-glyphicons">
+                            <md-grid-tile ng-repeat="symbol in currentCard" class="symbol" ng-click="select(symbol)">
+                                <img ng-src="{{symbol.path}}" class="glyphicon skyscraperIcon" />
+                            </md-grid-tile>
+                        </md-grid-list>
+                        <!--<div class="bs-glyphicons">
+                            <ul layout="row" layout-align="center center" class="bs-glyphicons-list" style="padding:0">
+                                <li ng-repeat="symbol in currentCard" ng-click="select(symbol)" class="symbol">
+                                    <img ng-src="{{symbol.path}}" class="glyphicon skyscraperIcon" />
+                                </li>
+                            </ul>
+                        </div>-->
                     </div>
                 </div>
             </md-content>
